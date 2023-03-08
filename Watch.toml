@@ -1,0 +1,6 @@
+[[watch]]
+# Watch all .rs files in the src directory
+watch = "src/**/*.rs"
+
+# Restart the server whenever any .rs file changes
+command = "cargo run"
