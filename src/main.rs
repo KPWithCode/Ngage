@@ -1,4 +1,4 @@
-use axum::{routing::{get}, Router};
+use axum::{routing::Router};
 use std::net::SocketAddr;
 use tower_http::cors::{Any, CorsLayer};
 
@@ -11,7 +11,6 @@ async fn main() {
     let cors = CorsLayer::new().allow_origin(Any);
 
     let app = Router::new()
-    .route("/", get(root))
     .nest("/api", routes::routes())
     .layer(cors);
 
@@ -25,8 +24,4 @@ async fn main() {
     {
         eprintln!("Error starting server: {}", e);
     }
-}
-
-async fn root() -> &'static str {
-    "Hello, Kaya!"
 }
