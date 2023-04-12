@@ -41,3 +41,29 @@ pub async fn dk_handler() -> Result<Response<String>, Infallible> {
         .body(format!("DraftKings data for {}: {:?}", date, player_props))
         .unwrap())
 }
+
+
+pub async fn fanduel_handler() -> Result<Response<String>, Infallible> {
+    let api_key = "YOUR_API_KEY_HERE";
+    let api_secret = "YOUR_API_SECRET_HERE";
+
+    let mut headers = HeaderMap::new();
+    headers.insert("X-Auth-Key", HeaderValue::from_str(api_key).unwrap());
+    headers.insert("X-Auth-Secret", HeaderValue::from_str(api_secret).unwrap());
+
+    let client = reqwest::Client::new();
+    let res = client
+        .get("https://api.fanduel.com/realtime/analytics")
+        .headers(headers)
+        .send()
+        .await
+        .unwrap()
+        .text()
+        .await
+        .unwrap();
+
+    Ok(Response::builder()
+        .status(StatusCode::OK)
+        .body(res)
+        .unwrap())
+}
