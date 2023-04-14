@@ -8,6 +8,7 @@ edition = "2021"
 [dependencies]
 axum = "0.6.10"
 cargo-watch = "8.4.0"
+chrono = "0.4.24"
 dotenv = "0.15.0"
 json = "0.12.4"
 redis = "0.22.3"
