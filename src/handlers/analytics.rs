@@ -2,7 +2,7 @@ use axum::http::{Response, StatusCode};
 use reqwest::header::{HeaderMap, HeaderValue};
 use std::convert::Infallible;
 
-pub async fn dk_handler() -> Result<Response<String>, Infallible> {
+pub async fn dk_handler() -> Result<Response<String>, Box<dyn std::error::Error>> {
     let date = chrono::Local::now().format("%Y-%m-%d").to_string();
     let dkKey = "";
 
@@ -31,11 +31,15 @@ pub async fn dk_handler() -> Result<Response<String>, Infallible> {
             .unwrap());
     }
 
-  let response_text = response.text().await?;
-  let json: serde_json::Value = serde_json::from_str(&response_text)?;
+    let response_text = response.text().await?;
+    let json: serde_json::Value = serde_json::from_str(&response_text)?;
+    // let player_props_array = match json["playerProps"].as_array() {
+    //     Some(array) => array,
+    //     None => &vec![],
+    // };
+    // let player_props = player_props_array.to_vec();
+    let player_props:Vec<String> = Vec::new();
 
-  let player_props = json["playerProps"].as_array().unwrap_or(&vec![]);
-  
     Ok(Response::builder()
         .status(StatusCode::OK)
         .body(format!("DraftKings data for {}: {:?}", date, player_props))
