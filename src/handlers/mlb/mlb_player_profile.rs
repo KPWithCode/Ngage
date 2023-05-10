@@ -11,7 +11,7 @@ pub async fn mlb_player_handler() -> Response<String> {
             response
         }
         Err(status) => {
-            let error_msg = format!("Error fetching NHL data: {:?}", status);
+            let error_msg = format!("Error fetching MLB data: {:?}", status);
             Response::builder()
                 .status(status)
                 .body(error_msg.into())
