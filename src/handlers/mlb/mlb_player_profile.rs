@@ -6,7 +6,7 @@ use std::env;
 pub async fn mlb_player_handler() -> Response<String> {
     match mlb_player_data().await {
         Ok(response_body) => {
-            let response = Response::new(response_body.clone());
+            let response = Response::new(response_body);
             println!("Response: {:?}", response);
             response
         }
@@ -42,5 +42,19 @@ async fn mlb_player_data() -> Result<String, StatusCode> {
         .await
         .map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
     let body = String::from_utf8(bytes.to_vec()).map_err(|_| StatusCode::INTERNAL_SERVER_ERROR)?;
-    Ok(body)
+    let player_data: serde_json::Value = serde_json::from_str(&body)?;
+
+    let batting_stats = &player_data["seasons"][0]["teams"][0]["statistics"]["batting"];
+    let ba = batting_stats["avg"].as_str().unwrap_or("N/A");
+    let slg = batting_stats["slg"].as_str().unwrap_or("N/A");
+    let obp = batting_stats["obp"].as_str().unwrap_or("N/A");
+    
+    // Construct a new JSON object containing only the relevant data
+    let response_data = serde_json::json!({
+        "BA": ba,
+        "SLG": slg,
+        "OBP": obp,
+    });
+
+    Ok(response_data.to_string())
 }
