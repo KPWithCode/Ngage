@@ -5,7 +5,7 @@ use tokio_postgres::{NoTls};
 
 pub async fn users_handler() -> Result<String, String> {
     dotenv().ok();
-    let db_url = env::var("DATABASE_URL").map_err(|_| "db url is incorrect")?;
+    let db_url: String = env::var("DATABASE_URL").map_err(|_| "db url is incorrect")?;
 
     let (client, connection) = tokio_postgres::connect(&db_url, NoTls)
         .await
