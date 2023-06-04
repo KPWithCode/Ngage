@@ -11,10 +11,12 @@ cargo-watch = "8.4.0"
 chrono = "0.4.24"
 dotenv = "0.15.0"
 json = "0.12.4"
+nhl-stats = "0.1.2"
 redis = "0.22.3"
 reqwest = "0.11.16"
 serde = { version = "1.0.152", features = ["derive"] }
 serde_json = "1.0.94"
+stripe = "0.0.5"
 tokio = { version = "1.26.0", features = ["full"] }
 tokio-postgres = "0.7.7"
 tower-http = { version = "0.4.0", features = ["cors"] }
